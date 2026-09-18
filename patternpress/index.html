@@ -1370,12 +1370,15 @@
     if (open){
       stage.scrollTop = 0;
       stage.scrollLeft = 0;
-      // Kick panel scroll so iOS re-binds touch scrolling after image gestures.
+      // Always open the sheet at the top, then nudge scroll so iOS
+      // re-binds touch scrolling after image pan/pinch gestures.
       const scroller = panelEl.querySelector('.panel-scroll');
       if (scroller){
-        const y = scroller.scrollTop;
-        scroller.scrollTop = y + 1;
-        scroller.scrollTop = y;
+        scroller.scrollTop = 0;
+        requestAnimationFrame(()=>{
+          scroller.scrollTop = 1;
+          scroller.scrollTop = 0;
+        });
       }
     }
     if (zoomPct === null) applyZoom();
